@@ -4,7 +4,7 @@ import logoImg from "../../assets/drivexLogo.png";
 
 export function Footer() {
   return (
-    <div className="bg-white up-shadow w-full mt-4">
+    <div className="bg-white up-shadow w-full mt-8">
       <footer className="max-w-7xl mx-auto py-4">
         <div className="flex flex-col items-center md:flex-row justify-between px-4">
           <div className="mb-4 md:mb-0">
