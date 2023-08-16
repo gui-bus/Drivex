@@ -10,7 +10,10 @@ export default {
         lightBlue: "#249C98",
         darkGray: "#222423",
         lightGray: "#DCE0DD",
-      }
+      },
+      scale: {
+        '102': '1.02',
+      },
     },
   },
   plugins: [],
