@@ -1,11 +1,11 @@
+import { useContext } from "react";
+import { AuthContext } from "../../contexts/authContext";
 import { Link } from "react-router-dom";
 import { FiUser, FiLogIn } from "react-icons/fi";
-
 import logoImg from "../../assets/drivexLogo.png";
 
 export function Header() {
-  const signed = true;
-  const loadingAuth = false;
+  const { signed, loadingAuth } = useContext(AuthContext);
 
   return (
     <div className="w-full flex items-center justify-center h-16 bg-white drop-shadow-md mb-8">
