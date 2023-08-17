@@ -1,12 +1,16 @@
+import { useEffect } from "react";
+
 import logoImg from "../../assets/drivexLogo.png";
 
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Container } from "../../components/container";
 import { Input } from "../../components/input";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { FiLogIn } from "react-icons/fi";
+import { signInWithEmailAndPassword, signOut } from "firebase/auth";
+import { auth } from "../../services/firebaseConnection";
 
 const schema = z.object({
   email: z
@@ -19,6 +23,7 @@ const schema = z.object({
 type FormData = z.infer<typeof schema>;
 
 export function Login() {
+  const navigate = useNavigate();
   const {
     register,
     handleSubmit,
@@ -28,8 +33,25 @@ export function Login() {
     mode: "onChange",
   });
 
+  useEffect(() => {
+    async function handleLogout() {
+      await signOut(auth);
+    }
+
+    handleLogout();
+  }, []);
+
   function onSubmit(data: FormData) {
-    console.log(data);
+    signInWithEmailAndPassword(auth, data.email, data.password)
+      .then((user) => {
+        console.log("Logado com sucesso");
+        console.log(user);
+        navigate("/dashboard", { replace: true });
+      })
+      .catch((err) => {
+        console.log("Erro ao logar");
+        console.log(err);
+      });
   }
 
   return (
