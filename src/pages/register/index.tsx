@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useContext } from "react";
 import logoImg from "../../assets/drivexLogo.png";
 
 import { Link, useNavigate } from "react-router-dom";
@@ -15,6 +15,7 @@ import {
   updateProfile,
   signOut,
 } from "firebase/auth";
+import { AuthContext } from "../../contexts/authContext";
 
 const schema = z.object({
   name: z.string().nonempty("O campo nome é obrigatório."),
@@ -31,6 +32,7 @@ const schema = z.object({
 type FormData = z.infer<typeof schema>;
 
 export function Register() {
+  const { handleInfoUser } = useContext(AuthContext);
   const navigate = useNavigate();
   const {
     register,
@@ -56,6 +58,12 @@ export function Register() {
           displayName: data.name,
         });
 
+        handleInfoUser({
+          name: data.name,
+          email: data.email,
+          uid: user.user.uid
+        })
+        
         console.log("CADASTRADO COM SUCESSO!");
         navigate("/dashboard", { replace: true });
       })
@@ -112,7 +120,7 @@ export function Register() {
 
           <button
             type="submit"
-            className="bg-teal-400 hover:bg-teal-500 w-full rounded-md text-white h-10 font-medium flex items-center justify-center gap-2"
+            className="bg-mainRed hover:bg-mainRedLighter w-full rounded-md text-white h-10 font-medium flex items-center justify-center gap-2"
           >
             Registrar <FaUserPlus size={24} color="#FFF" />
           </button>

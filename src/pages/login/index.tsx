@@ -91,7 +91,7 @@ export function Login() {
 
           <button
             type="submit"
-            className="bg-teal-400 hover:bg-teal-500 w-full rounded-md text-white h-10 font-medium flex items-center justify-center gap-2"
+            className="bg-mainRed hover:bg-mainRedLighter w-full rounded-md text-white h-10 font-medium flex items-center justify-center gap-2"
           >
             Acessar <FiLogIn size={24} color="#FFF" />
           </button>
