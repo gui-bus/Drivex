@@ -8,7 +8,7 @@ import { Input } from "../../components/input";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { FiLogIn } from "react-icons/fi";
+import { RiLoginBoxLine } from "react-icons/ri";
 import { signInWithEmailAndPassword, signOut } from "firebase/auth";
 import { auth } from "../../services/firebaseConnection";
 
@@ -91,9 +91,9 @@ export function Login() {
 
           <button
             type="submit"
-            className="bg-mainRed hover:bg-mainRedLighter w-full rounded-md text-white h-10 font-medium flex items-center justify-center gap-2"
+            className="bg-mainRed hover:bg-mainRedLighter w-full rounded-md text-white h-10 font-medium flex items-center justify-center gap-2 transition-all duration-200 ease-linear"
           >
-            Acessar <FiLogIn size={24} color="#FFF" />
+            Acessar <RiLoginBoxLine size={24} color="#FFF" />
           </button>
         </form>
 

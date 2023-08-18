@@ -7,7 +7,7 @@ import { Input } from "../../components/input";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { FaUserPlus } from "react-icons/fa";
+import { BsFillPersonPlusFill } from "react-icons/bs";
 
 import { auth } from "../../services/firebaseConnection";
 import {
@@ -120,9 +120,9 @@ export function Register() {
 
           <button
             type="submit"
-            className="bg-mainRed hover:bg-mainRedLighter w-full rounded-md text-white h-10 font-medium flex items-center justify-center gap-2"
+            className="bg-mainRed hover:bg-mainRedLighter w-full rounded-md text-white h-10 font-medium flex items-center justify-center gap-2 transition-all duration-200 ease-linear"
           >
-            Registrar <FaUserPlus size={24} color="#FFF" />
+            Cadastrar <BsFillPersonPlusFill size={24} color="#FFF" />
           </button>
         </form>
 
