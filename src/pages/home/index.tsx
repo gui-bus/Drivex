@@ -24,7 +24,7 @@ export function Home() {
           <img
             src="https://image.webmotors.com.br/_fotos/anunciousados/gigante/2023/202308/20230805/ferrari-sf90-3.9-v8-turbo-phev-stradale-f1dct-wmimagem14292271233.jpg?s=fill&w=552&h=414&q=60"
             alt="Veiculo"
-            className="w-full rounded-t-lg mb-2 max-h-72"
+            className="w-full rounded-t-lg mb-2 max-h-72 object-cover"
           />
           <p className="font-bold mt-1 px-2">FERRARI SF90</p>
           <p className="text-zinc-700 px-2 text-sm">
