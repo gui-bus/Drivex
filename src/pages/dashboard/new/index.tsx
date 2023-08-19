@@ -1,6 +1,5 @@
-import { ChangeEvent, useState, useContext } from "react";
+import { ChangeEvent, useState, useContext, useEffect } from "react";
 import { Container } from "../../../components/container";
-import { DashboardHeader } from "../../../components/panelHeader";
 
 import { FiUpload, FiTrash } from "react-icons/fi";
 import { CgDanger } from "react-icons/cg";
@@ -13,13 +12,14 @@ import { zodResolver } from "@hookform/resolvers/zod";
 
 import { AuthContext } from "../../../contexts/authContext";
 import { v4 as uuidV4 } from "uuid";
-import { storage } from "../../../services/firebaseConnection";
+import { storage, db } from "../../../services/firebaseConnection";
 import {
   ref,
   uploadBytes,
   getDownloadURL,
   deleteObject,
 } from "firebase/storage";
+import { addDoc, collection } from "firebase/firestore";
 
 const schema = z.object({
   name: z.string().nonempty("Campo obrigatório"),
@@ -72,6 +72,32 @@ export function New() {
 
   const [carImages, setCarImages] = useState<ImageItemProps[]>([]);
 
+  const greetings = {
+    morning: "Bom dia",
+    afternoon: "Boa tarde",
+    evening: "Boa noite",
+  };
+
+  function getGreeting(hour: number) {
+    if (hour >= 5 && hour < 12) {
+      return greetings.morning;
+    } else if (hour >= 12 && hour < 18) {
+      return greetings.afternoon;
+    } else {
+      return greetings.evening;
+    }
+  }
+
+  const [greeting, setGreeting] = useState("Olá");
+
+  useEffect(() => {
+    const now = new Date();
+    const currentHour = now.getHours();
+    const currentGreeting = getGreeting(currentHour);
+    setGreeting(currentGreeting);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   async function handleFile(e: ChangeEvent<HTMLInputElement>) {
     if (e.target.files && e.target.files[0]) {
       const image = e.target.files[0];
@@ -110,6 +136,53 @@ export function New() {
   }
 
   function onSubmit(data: FormData) {
+    if (carImages.length === 0) {
+      alert("Favor enviar alguma imagem deste veículo");
+      return;
+    }
+
+    const carListImages = carImages.map((car) => {
+      return {
+        uid: car.uid,
+        name: car.name,
+        url: car.url,
+      };
+    });
+
+    addDoc(collection(db, "vehicles"), {
+      name: data.name,
+      model: data.model,
+      year: data.year,
+      km: data.km,
+      price: data.price,
+      city: data.city,
+      whatsapp: data.whatsapp,
+      description: data.description,
+      gas: data.gas,
+      color: data.color,
+      plateEnd: data.plateEnd,
+      transmission: data.transmission,
+      ipva: data.ipva,
+      owner: data.owner,
+      trade: data.trade,
+      license: data.license,
+      armored: data.armored,
+      inspections: data.inspections,
+      created: new Date(),
+      vehicleOwner: user?.name,
+      uid: user?.uid,
+      images: carListImages,
+    })
+      .then(() => {
+        reset();
+        setCarImages([]);
+        console.log("Cadastrado com sucesso");
+      })
+      .catch((error) => {
+        console.log(error);
+        console.log("Erro ao cadastrar no banco");
+      });
+
     console.log(data);
   }
 
@@ -129,11 +202,13 @@ export function New() {
 
   return (
     <Container>
-      <DashboardHeader />
-
-      <h1 className="mt-2 mb-4 text-center font-medium text-xl">
-        Preencha o formulário abaixo com as informaçoes do veículo
+      <h1 className="mt-5 mb-1 text-center font-semibold">
+        {greeting} {user?.name || "Visitante"}!
       </h1>
+      <p className="mb-5 text-center font-medium">
+        Para cadastrar um veículo, basta preencher o formulário abaixo com as
+        informações necessárias.
+      </p>
 
       <div className="w-full bg-white p-3 rounded-lg flex flex-col sm:flex-row items-center gap-2">
         <button className="border-2 w-48 rounded-lg flex items-center justify-center cursor-pointer border-gray-600 h-32 md:w-48">
