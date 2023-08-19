@@ -13,7 +13,7 @@ export function Private({ children }: PrivateProps): any {
   if (loadingAuth) {
     return (
       <div className="loading-container">
-        <BarLoader color={"#2dd4bf"} loading={loadingAuth} />
+        <BarLoader color={"#DC3237"} loading={loadingAuth} />
       </div>
     );
   }
