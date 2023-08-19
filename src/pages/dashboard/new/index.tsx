@@ -349,7 +349,7 @@ export function New() {
                 {...register("year")}
                 name="year"
                 onKeyDown={(e) => {
-                  const allowedKeys = /[0-9.]/;
+                  const allowedKeys = /[0-9./]/;
                   if (!allowedKeys.test(e.key) && e.key !== "Backspace") {
                     e.preventDefault();
                   }
@@ -765,7 +765,7 @@ export function New() {
           <div className="mb-3">
             <p className="mb-2 font-medium">Informaçoes adicionais</p>
             <textarea
-              className="border-2 w-full rounded-lg h-24 px-2 py-2"
+              className="border-2 w-full rounded-lg min-h-[8rem] h-32 max-h-32 px-2 py-2"
               {...register("description")}
               name="description"
               id="description"
