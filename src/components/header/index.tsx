@@ -10,10 +10,16 @@ import logoImg from "../../assets/drivexLogo.png";
 
 import { signOut } from "firebase/auth";
 import { auth } from "../../services/firebaseConnection";
+import toast from "react-hot-toast";
 
 export function Header() {
   async function handleLogout() {
     await signOut(auth);
+    toast.success("Logout realizado. Até a próxima!", {
+      style: {
+        fontSize: "14px",
+      },
+    });
   }
   const { signed, loadingAuth } = useContext(AuthContext);
 
