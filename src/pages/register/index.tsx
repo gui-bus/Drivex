@@ -17,6 +17,8 @@ import {
 } from "firebase/auth";
 import { AuthContext } from "../../contexts/authContext";
 
+import toast from "react-hot-toast";
+
 const schema = z.object({
   name: z.string().nonempty("O campo nome é obrigatório."),
   email: z
@@ -61,10 +63,17 @@ export function Register() {
         handleInfoUser({
           name: data.name,
           email: data.email,
-          uid: user.user.uid
-        })
+          uid: user.user.uid,
+        });
+
         
         console.log("CADASTRADO COM SUCESSO!");
+        const displayName = user.user.displayName || data.name;
+        toast.success(`Cadastro realizado!\nBem-vindo(a), ${displayName}!`, {
+          style: {
+            fontSize: "14px",
+          },
+        });
         navigate("/dashboard", { replace: true });
       })
       .catch((error) => {
@@ -91,7 +100,7 @@ export function Register() {
           <div className="mb-3">
             <Input
               type="text"
-              placeholder="Digite seu nome completo"
+              placeholder="Digite seu nome"
               name="name"
               error={errors.name?.message}
               register={register}
