@@ -20,11 +20,26 @@ import {
   deleteObject,
 } from "firebase/storage";
 import { addDoc, collection } from "firebase/firestore";
+import { toast } from "react-hot-toast";
 
 const schema = z.object({
   name: z.string().nonempty("Campo obrigatório"),
-  model: z.string().nonempty("Campo obrigatório"),
-  year: z.string().nonempty("Campo obrigatório"),
+  model: z
+    .string()
+    .min(1, "Campo obrigatório")
+    .max(30, "Máximo de 30 caracteres"),
+  year: z
+    .string()
+    .min(4, "Campo obrigatório")
+    .refine(
+      (value) => {
+        // Aceita um valor com 4 dígitos ou um valor com 4 dígitos, uma barra e mais 4 dígitos (XXXX/XXXX)
+        return /^\d{4}$|^\d{4}\/\d{4}$/.test(value);
+      },
+      {
+        message: "Ano inválido",
+      }
+    ),
   km: z.string().nonempty("Campo obrigatório"),
   price: z.string().nonempty("Campo obrigatório"),
   city: z.string().nonempty("Campo obrigatório"),
@@ -47,6 +62,10 @@ const schema = z.object({
   license: z.string().nonempty("Campo obrigatório"),
   armored: z.string().nonempty("Campo obrigatório"),
   inspections: z.string().nonempty("Campo obrigatório"),
+  version: z
+    .string()
+    .min(1, "Campo obrigatório")
+    .max(40, "Máximo de 40 caracteres"),
 });
 
 type FormData = z.infer<typeof schema>;
@@ -105,7 +124,7 @@ export function New() {
       if (image.type === "image/jpeg" || image.type === "image/png") {
         await handleUpload(image);
       } else {
-        alert("Envie uma imagem em formato JPEG ou PNG!");
+        toast.error("Por favor, selecione uma imagem em formato JPEG ou PNG.");
         return;
       }
     }
@@ -131,13 +150,14 @@ export function New() {
         };
 
         setCarImages((images) => [...images, imageItem]);
+        toast.success("Imagem adicionada com sucesso!");
       });
     });
   }
 
   function onSubmit(data: FormData) {
     if (carImages.length === 0) {
-      alert("Favor enviar alguma imagem deste veículo");
+      toast.error("Por favor, envie pelo menos uma imagem.");
       return;
     }
 
@@ -156,6 +176,7 @@ export function New() {
       km: data.km,
       price: data.price,
       city: data.city,
+      state: data.state,
       whatsapp: data.whatsapp,
       description: data.description,
       gas: data.gas,
@@ -172,18 +193,19 @@ export function New() {
       vehicleOwner: user?.name,
       uid: user?.uid,
       images: carListImages,
+      version: data.version,
     })
       .then(() => {
         reset();
         setCarImages([]);
-        console.log("Cadastrado com sucesso");
+        toast.success("Veículo cadastrado com sucesso!");
       })
       .catch((error) => {
         console.log(error);
-        console.log("Erro ao cadastrar no banco");
+        toast.error(
+          "Ocorreu um erro ao cadastrar o veículo. Por favor, tente novamente."
+        );
       });
-
-    console.log(data);
   }
 
   async function handleDeleteImage(item: ImageItemProps) {
@@ -195,8 +217,11 @@ export function New() {
       setCarImages((prevCarImages) =>
         prevCarImages.filter((car: ImageItemProps) => car.url !== item.url)
       );
+      toast.success("Imagem removida com sucesso!", {
+        icon: "🗑️",
+      });
     } catch (err) {
-      console.log("ERRO AO DELETAR");
+      toast.error("Erro ao deletar imagem!");
     }
   }
 
@@ -231,7 +256,7 @@ export function New() {
             className="w-full h-32 flex items-center justify-center relative"
           >
             <button
-              className="absolute"
+              className="absolute transition-all duration-500 ease-in-out hover:scale-125"
               onClick={() => handleDeleteImage(item)}
             >
               <FiTrash size={28} color="#FFF" />
@@ -247,26 +272,107 @@ export function New() {
 
       <div className="w-full bg-white p-3 rounded-lg flex flex-col sm:flex-row items-center gap-2 mt-2 text-sm">
         <form className="w-full" onSubmit={handleSubmit(onSubmit)}>
-          <div className="mb-3">
-            <p className="mb-2 font-medium">Nome</p>
-            <Input
-              type="text"
-              register={register}
-              name="name"
-              error={errors.name?.message}
-              placeholder="Ex: LAMBORGHINI URUS..."
-            />
-          </div>
+          <div className="flex w-full mb-3 flex-col md:flex-row items-center gap-4">
+            <div className="w-full">
+              <p className="mb-2 font-medium">Marca</p>
+              <select
+                {...register("name")}
+                name="name"
+                className="border-2 w-full rounded-lg h-11 px-2"
+                defaultValue=""
+              >
+                <option value="" disabled>
+                  Selecione uma marca
+                </option>
+                {[
+                  "Toyota",
+                  "Ford",
+                  "Chevrolet",
+                  "Honda",
+                  "Mercedes-Benz",
+                  "BMW",
+                  "Audi",
+                  "Volkswagen",
+                  "Nissan",
+                  "Subaru",
+                  "Lamborghini",
+                  "Ferrari",
+                  "Maserati",
+                  "Jaguar",
+                  "Volvo",
+                  "Land Rover",
+                  "Mazda",
+                  "Kia",
+                  "Hyundai",
+                  "Porsche",
+                  "Tesla",
+                  "Fiat",
+                  "Renault",
+                  "Peugeot",
+                  "Citroën",
+                  "Jeep",
+                  "Chrysler",
+                  "Dodge",
+                  "Buick",
+                  "GMC",
+                  "Cadillac",
+                  "Lincoln",
+                  "Acura",
+                  "Infiniti",
+                  "Lexus",
+                  "Alfa Romeo",
+                  "Mini",
+                  "Mitsubishi",
+                  "Landwind",
+                  "Geely",
+                  "BYD",
+                  "Chery",
+                  "Great Wall",
+                  "Haaval",
+                  "Suzuki",
+                  "Daihatsu",
+                  "Isuzu",
+                  "Ram",
+                  "Caoa Chery",
+                  "Jac",
+                  // Adicione mais marcas aqui
+                ]
+                  .sort()
+                  .map((marca) => (
+                    <option key={marca} value={marca}>
+                      {marca}
+                    </option>
+                  ))}
+              </select>
+              {errors.name && (
+                <div className="flex items-center gap-1 my-2 font-medium text-sm">
+                  <CgDanger size={16} color="#EF4444" />
+                  <p className="text-red-500">{errors.name?.message}</p>
+                </div>
+              )}
+            </div>
 
-          <div className="mb-3">
-            <p className="mb-2 font-medium">Modelo</p>
-            <Input
-              type="text"
-              register={register}
-              name="model"
-              error={errors.model?.message}
-              placeholder="Ex: 4.0 V8 TURBO..."
-            />
+            <div className="w-full">
+              <p className="mb-2 font-medium">Modelo</p>
+              <Input
+                type="text"
+                register={register}
+                name="model"
+                error={errors.model?.message}
+                placeholder="Ex: URUS..."
+              />
+            </div>
+
+            <div className="w-full">
+              <p className="mb-2 font-medium">Versão</p>
+              <Input
+                type="text"
+                register={register}
+                name="version"
+                error={errors.version?.message}
+                placeholder="Ex: 4.0 V8 TURBO..."
+              />
+            </div>
           </div>
 
           <div className="flex w-full mb-3 flex-col md:flex-row items-center gap-4">
@@ -287,10 +393,15 @@ export function New() {
                 <option value="Crossover">Crossover</option>
                 <option value="Minivan">Minivan</option>
                 <option value="Picape">Picape</option>
-                <option value="Coupé">Coupé</option>
+                <option value="Cupê">Cupê</option>
                 <option value="Conversível">Conversível</option>
-                <option value="Esportivo">Esportivo</option>
-                <option value="Utilitário">Utilitário</option>
+                <option value="Utilitário esportivo">
+                  Utilitário esportivo
+                </option>
+                <option value="Perua/SW">Perua/SW</option>
+                <option value="Van">Van</option>
+                <option value="Ônibus">Ônibus</option>
+                <option value="Trailer">Trailer</option>
               </select>
               {errors.body && (
                 <div className="flex items-center gap-1 my-2 font-medium text-sm">
@@ -306,31 +417,27 @@ export function New() {
                 type="text"
                 {...register("price")}
                 name="price"
+                autoComplete="off"
                 onKeyDown={(e) => {
-                  const allowedKeys = /[0-9.]/;
+                  const allowedKeys = /[0-9]/;
                   if (!allowedKeys.test(e.key) && e.key !== "Backspace") {
-                    e.preventDefault();
-                  }
-                  if (e.key === "." || e.key === ",") {
                     e.preventDefault();
                   }
                 }}
                 onBlur={(e) => {
-                  const value = parseFloat(
-                    e.target.value.replace(".", "").replace(",", ".")
-                  );
+                  const value = parseInt(e.target.value.replace(/\D/g, ""));
                   if (!isNaN(value)) {
                     const formattedValue = value.toLocaleString("pt-BR", {
                       style: "currency",
                       currency: "BRL",
-                      minimumFractionDigits: 2,
-                      maximumFractionDigits: 2,
+                      minimumFractionDigits: 0,
+                      maximumFractionDigits: 0,
                     });
                     e.target.value = formattedValue;
                   }
                 }}
                 className="border-2 w-full rounded-lg h-11 px-2"
-                placeholder="Ex: R$ 2.000.000,00"
+                placeholder="Ex: R$ 2.000.000"
               />
               {errors.price && (
                 <div className="flex items-center gap-1 my-2 font-medium text-sm">
@@ -348,6 +455,7 @@ export function New() {
                 type="text"
                 {...register("year")}
                 name="year"
+                autoComplete="off"
                 onKeyDown={(e) => {
                   const allowedKeys = /[0-9./]/;
                   if (!allowedKeys.test(e.key) && e.key !== "Backspace") {
@@ -374,6 +482,7 @@ export function New() {
                 type="text"
                 {...register("km")}
                 name="km"
+                autoComplete="off"
                 onKeyDown={(e) => {
                   const allowedKeys = /[0-9.]/;
                   if (!allowedKeys.test(e.key) && e.key !== "Backspace") {
@@ -506,6 +615,7 @@ export function New() {
                 <option value="" disabled>
                   Selecione uma opção
                 </option>
+                <option value="Não possui">Sem placa</option>
                 <option value="0">0</option>
                 <option value="1">1</option>
                 <option value="2">2</option>
@@ -750,6 +860,7 @@ export function New() {
                     e.target.value = formattedValue;
                   }
                 }}
+                autoComplete="off"
                 className="border-2 w-full rounded-lg h-11 px-2"
                 placeholder="Ex: 01299999999..."
               />
