@@ -27,6 +27,8 @@ type FormData = z.infer<typeof schema>;
 
 export function Login() {
   const { user } = useContext(AuthContext);
+  console.log(user);
+
   const navigate = useNavigate();
   const {
     register,
