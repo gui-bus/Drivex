@@ -228,7 +228,7 @@ export function New() {
   return (
     <Container>
       <h1 className="mt-5 mb-1 text-center font-semibold">
-        {greeting} {user?.name || "Visitante"}!
+        {greeting}, {user?.name || "Visitante"}!
       </h1>
       <p className="mb-5 text-center font-medium">
         Para cadastrar um veículo, basta preencher o formulário abaixo com as
