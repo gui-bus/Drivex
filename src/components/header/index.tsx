@@ -1,18 +1,20 @@
+import { useState } from "react";
 import { useContext } from "react";
 import { AuthContext } from "../../contexts/authContext";
 import { Link } from "react-router-dom";
-
 import { RiLoginBoxLine, RiLogoutBoxLine } from "react-icons/ri";
 import { GrConfigure } from "react-icons/gr";
 import { GoChecklist } from "react-icons/go";
-
+import { GiHamburgerMenu } from "react-icons/gi";
 import logoImg from "../../assets/drivexLogo.png";
-
 import { signOut } from "firebase/auth";
 import { auth } from "../../services/firebaseConnection";
 import toast from "react-hot-toast";
 
 export function Header() {
+  const [menuOpen, setMenuOpen] = useState(false);
+  const { signed, loadingAuth } = useContext(AuthContext);
+
   async function handleLogout() {
     await signOut(auth);
     toast.success("Logout realizado. Até a próxima!", {
@@ -20,60 +22,98 @@ export function Header() {
         fontSize: "14px",
       },
     });
+    setMenuOpen(false); // Fechar o menu após o logout
   }
-  const { signed, loadingAuth } = useContext(AuthContext);
+
+  function closeMenu() {
+    setMenuOpen(false); // Função para fechar o menu
+  }
 
   return (
-    <div className="w-full flex items-center md:h-16 py-2 bg-white drop-shadow-md mb-5">
-      <header className="flex w-full max-w-7xl items-center justify-around md:justify-between px-4 mx-auto relative">
-        <div className="flex flex-col md:flex-row justify-center items-center">
-          <Link to="/">
-            <img
-              src={logoImg}
-              alt="Logo DriveX"
-              className="w-32 h-auto mt-2 md:mt-0"
-            />
-          </Link>
-
-          <div className="flex mt-2 md:mt-0 md:absolute md:right-0 md:px-4">
-            {/* Se não estiver no loading e estiver logado renderiza o FiUser */}
-            {!loadingAuth && signed && (
-              <Link
-                to="/"
-                className="border-1 rounded-full px-3 py-2 border-gray-900 transition-all duration-300 ease-in-out hover:bg-gray-100 mr-1 font-medium flex gap-2 items-center justify-center text-sm md:text-base hover:scale-105"
-              >
-                Catalogo <GoChecklist size={24} />
-              </Link>
-            )}
-            {!loadingAuth && signed && (
-              <Link
-                to="/dashboard"
-                className="border-1 rounded-full px-3 py-2 border-gray-900 transition-all duration-300 ease-in-out hover:bg-gray-100 mr-1 font-medium flex gap-1 items-center justify-center text-sm md:text-base  hover:scale-105"
-              >
-                Menu <GrConfigure size={24} />
-              </Link>
-            )}
-            {!loadingAuth && signed && (
-              <button
-                className="border-1 rounded-full px-3 py-2 border-gray-900 transition-all duration-300 ease-in-out hover:bg-gray-100 font-medium flex gap-1 items-center justify-center text-sm md:text-base hover:scale-105"
-                onClick={handleLogout}
-              >
-                Logout <RiLogoutBoxLine size={24} />
-              </button>
-            )}
+    <header className="bg-white shadow-md mb-5 font-medium">
+      <div className="container mx-auto flex justify-between items-center py-2 px-4 md:px-8">
+        <Link to="/" className="flex items-center">
+          <img src={logoImg} alt="Logo DriveX" className="w-32 h-auto" />
+        </Link>
+        {signed ? (
+          <div className="hidden md:flex space-x-4">
+            <Link
+              to="/"
+              className="flex gap-1 px-3 py-2 hover:bg-gray-100 rounded-full text-gray-600 hover:text-gray-800"
+            >
+              Catalogo <GoChecklist size={24} />
+            </Link>
+            <Link
+              to="/dashboard"
+              className="flex gap-1 px-3 py-2 hover:bg-gray-100 rounded-full text-gray-600 hover:text-gray-800"
+            >
+              Dashboard <GrConfigure size={24} />
+            </Link>
+            <button
+              onClick={handleLogout}
+              className="flex gap-1 px-3 py-2 hover:bg-gray-100 rounded-full text-gray-600 hover:text-gray-800"
+            >
+              Logout <RiLogoutBoxLine size={24} />
+            </button>
           </div>
-        </div>
-
-        {/* Se não estiver no loading e nem logado renderiza o FiLogIn */}
-        {!loadingAuth && !signed && (
-          <Link
-            to="/login"
-            className="border-1 rounded-full px-3 py-2 border-gray-900 transition-all duration-300 ease-in-out hover:bg-gray-100 font-medium flex gap-1 items-center justify-center text-sm md:text-base hover:scale-105"
-          >
-            Login <RiLoginBoxLine size={24} />
-          </Link>
+        ) : (
+          !loadingAuth && (
+            <Link
+              to="/login"
+              className="flex gap-1 px-3 py-2 hover:bg-gray-100 rounded-full ml-auto"
+            >
+              Login <RiLoginBoxLine size={24} />
+            </Link>
+          )
         )}
-      </header>
-    </div>
+
+        {/* Menu Hamburger para dispositivos móveis */}
+        {signed && (
+          <div className="md:hidden">
+            <button
+              className="text-gray-600 focus:outline-none"
+              onClick={() => setMenuOpen(!menuOpen)}
+            >
+              <GiHamburgerMenu className="w-6 h-6" />
+            </button>
+          </div>
+        )}
+      </div>
+
+      {/* Menu Mobile */}
+      {menuOpen && (
+        <nav className="bg-white p-4 md:hidden flex flex-col">
+          {signed && (
+            <Link
+              to="/"
+              onClick={closeMenu}
+              className="px-3 py-2 hover:bg-gray-100 rounded-full text-gray-600 hover:text-gray-800 flex gap-2 items-center justify-center"
+            >
+              Catalogo <GoChecklist size={24} />
+            </Link>
+          )}
+          {signed && (
+            <Link
+              to="/dashboard"
+              onClick={closeMenu}
+              className="px-3 py-2 hover:bg-gray-100 rounded-full text-gray-600 hover:text-gray-800 flex gap-2 items-center justify-center"
+            >
+              Dashboard <GrConfigure size={24} />
+            </Link>
+          )}
+          {signed && (
+            <button
+              onClick={() => {
+                handleLogout();
+                closeMenu();
+              }}
+              className="px-3 py-2 hover:bg-gray-100 rounded-full text-gray-600 hover:text-gray-800 flex gap-2 items-center justify-center"
+            >
+              Logout <RiLogoutBoxLine size={24} />
+            </button>
+          )}
+        </nav>
+      )}
+    </header>
   );
 }
