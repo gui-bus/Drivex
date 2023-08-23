@@ -59,7 +59,7 @@ export function Login() {
             fontSize: "14px",
           },
         });
-        navigate("/dashboard", { replace: true });
+        navigate("/", { replace: true });
       })
       .catch((err) => {
         console.log(err);

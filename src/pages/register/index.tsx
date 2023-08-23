@@ -74,7 +74,7 @@ export function Register() {
             fontSize: "14px",
           },
         });
-        navigate("/dashboard", { replace: true });
+        navigate("/", { replace: true });
       })
       .catch((error) => {
         console.log("ERRO AO CADASTRAR ESTE USUARIO");
