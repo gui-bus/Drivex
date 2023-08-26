@@ -10,6 +10,9 @@
 
 ***Venha e explore a melhor seleção de carros novos e usados em todo o Brasil!*** :star:
 
+> **ALERTA** :warning:
+> Este projeto se trata de um projeto de estudos, ou seja, nenhuma das informações contidas na página do projeto são totalmente verídicas. Todas as informaçoes e imagens são meramente ilustrativas e foram obtidas do site da [WebMotors](https://www.webmotors.com.br/), caso tenha ficado interessado em algum veículo basta proculá-lo no site da WebMotors.
+
 ### Funcionalidades :dart:
 - [x] ***Interface de usuário, navegação e design***
 	- Através da combinação de ***React + Tailwind*** foi criado uma interface moderna, atraente, intuitiva e totalmente responsiva.
@@ -81,6 +84,9 @@ Gostaria de contribuir para o projeto? ***Fico muito grato pelo interesse!***
 
 - Sinta-se à vontade para entrar em contato comigo através das minhas redes sociais para enviar seu feedback, sugestões ou comentários sobre o projeto.
 
+## Creditos e agradecimentos :handshake:
+- Todas as imagens e informaçoes dos veículos foram retiradas do site da ***[WebMotors](https://www.webmotors.com.br/)***.
+- Agradeço ao professor ***[Matheus Fraga](https://github.com/devfraga)*** pelos ensinamentos que foram cruciais para a realização deste projeto.
 
 ## Redes sociais para contato! :speech_balloon:
 
