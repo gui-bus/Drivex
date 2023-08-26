@@ -3,8 +3,6 @@ import { useContext } from "react";
 import { AuthContext } from "../../contexts/authContext";
 import { Link } from "react-router-dom";
 import { RiLoginBoxLine, RiLogoutBoxLine } from "react-icons/ri";
-import { GrConfigure } from "react-icons/gr";
-import { GoChecklist } from "react-icons/go";
 import { GiHamburgerMenu } from "react-icons/gi";
 import logoImg from "../../assets/drivexLogo.png";
 import { signOut } from "firebase/auth";
@@ -41,13 +39,13 @@ export function Header() {
               to="/"
               className="flex gap-1 px-3 py-2 hover:bg-gray-100 rounded-full text-gray-600 hover:text-gray-800"
             >
-              Catalogo <GoChecklist size={24} />
+              Catalogo
             </Link>
             <Link
               to="/dashboard"
               className="flex gap-1 px-3 py-2 hover:bg-gray-100 rounded-full text-gray-600 hover:text-gray-800"
             >
-              Dashboard <GrConfigure size={24} />
+              Dashboard
             </Link>
             <button
               onClick={handleLogout}
@@ -89,7 +87,7 @@ export function Header() {
               onClick={closeMenu}
               className="px-3 py-2 hover:bg-gray-100 rounded-full text-gray-600 hover:text-gray-800 flex gap-2 items-center justify-center"
             >
-              Catalogo <GoChecklist size={24} />
+              Catalogo
             </Link>
           )}
           {signed && (
@@ -98,7 +96,7 @@ export function Header() {
               onClick={closeMenu}
               className="px-3 py-2 hover:bg-gray-100 rounded-full text-gray-600 hover:text-gray-800 flex gap-2 items-center justify-center"
             >
-              Dashboard <GrConfigure size={24} />
+              Dashboard 
             </Link>
           )}
           {signed && (
