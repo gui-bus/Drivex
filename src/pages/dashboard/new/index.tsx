@@ -40,8 +40,22 @@ const schema = z.object({
         message: "Ano inválido",
       }
     ),
-  km: z.string().nonempty("Campo obrigatório"),
-  price: z.string().nonempty("Campo obrigatório"),
+  km: z
+    .string()
+    .refine((value) => /^\d+$/.test(value), {
+      message: "Apenas números são permitidos",
+    })
+    .refine((value) => value !== "", {
+      message: "Campo obrigatório",
+    }),
+  price: z
+    .string()
+    .refine((value) => /^\d+$/.test(value), {
+      message: "Apenas números são permitidos",
+    })
+    .refine((value) => value !== "", {
+      message: "Campo obrigatório",
+    }),
   city: z.string().nonempty("Campo obrigatório"),
   state: z.string().nonempty("Campo obrigatório"),
   whatsapp: z
@@ -67,6 +81,7 @@ const schema = z.object({
     .min(1, "Campo obrigatório")
     .max(40, "Máximo de 40 caracteres"),
 });
+
 
 type FormData = z.infer<typeof schema>;
 
@@ -170,11 +185,11 @@ export function New() {
     });
 
     addDoc(collection(db, "vehicles"), {
-      name: data.name,
-      model: data.model,
+      name: data.name.toUpperCase(),
+      model: data.model.toUpperCase(),
       year: data.year,
-      km: data.km,
-      price: data.price,
+      km: data.km.toString(),
+      price: data.price.toString(),
       city: data.city,
       state: data.state,
       whatsapp: data.whatsapp,
@@ -193,7 +208,9 @@ export function New() {
       vehicleOwner: user?.name,
       uid: user?.uid,
       images: carListImages,
-      version: data.version,
+      version: data.version.toUpperCase(),
+      body: data.body,
+      searchName: data.name.toUpperCase() + " " + data.model.toUpperCase(),
     })
       .then(() => {
         reset();
@@ -335,6 +352,8 @@ export function New() {
                   "Ram",
                   "Caoa Chery",
                   "Jac",
+                  "Troller",
+                  "Rolls-Royce",
                   // Adicione mais marcas aqui
                 ]
                   .sort()
@@ -377,7 +396,7 @@ export function New() {
 
           <div className="flex w-full mb-3 flex-col md:flex-row items-center gap-4">
             <div className="w-full">
-              <p className="mb-2 font-medium">Carroceria</p>
+              <p className="mb-2 font-medium">Categoria</p>
               <select
                 {...register("body")}
                 name="body"
@@ -388,20 +407,13 @@ export function New() {
                   Selecione uma opção
                 </option>
                 <option value="Sedan">Sedan</option>
-                <option value="Hatchback">Hatchback</option>
+                <option value="Hatch">Hatch</option>
                 <option value="SUV">SUV</option>
                 <option value="Crossover">Crossover</option>
-                <option value="Minivan">Minivan</option>
                 <option value="Picape">Picape</option>
-                <option value="Cupê">Cupê</option>
                 <option value="Conversível">Conversível</option>
-                <option value="Utilitário esportivo">
-                  Utilitário esportivo
-                </option>
-                <option value="Perua/SW">Perua/SW</option>
-                <option value="Van">Van</option>
-                <option value="Ônibus">Ônibus</option>
-                <option value="Trailer">Trailer</option>
+                <option value="Esportivo">Esportivo</option>
+                <option value="Elétrico">Elétrico</option>
               </select>
               {errors.body && (
                 <div className="flex items-center gap-1 my-2 font-medium text-sm">
@@ -413,32 +425,32 @@ export function New() {
 
             <div className="w-full">
               <p className="mb-2 text-gray-600 font-medium">Preço</p>
-              <input
-                type="text"
-                {...register("price")}
-                name="price"
-                autoComplete="off"
-                onKeyDown={(e) => {
-                  const allowedKeys = /[0-9]/;
-                  if (!allowedKeys.test(e.key) && e.key !== "Backspace") {
-                    e.preventDefault();
-                  }
-                }}
-                onBlur={(e) => {
-                  const value = parseInt(e.target.value.replace(/\D/g, ""));
-                  if (!isNaN(value)) {
-                    const formattedValue = value.toLocaleString("pt-BR", {
-                      style: "currency",
-                      currency: "BRL",
-                      minimumFractionDigits: 0,
-                      maximumFractionDigits: 0,
-                    });
-                    e.target.value = formattedValue;
-                  }
-                }}
-                className="border-2 w-full rounded-lg h-11 px-2"
-                placeholder="Ex: R$ 2.000.000"
-              />
+              <div className="relative flex items-center w-full">
+                <span className="inline-block absolute left-0 pl-3 text-gray-500">
+                  R$
+                </span>
+                <input
+                  type="text"
+                  {...register("price")}
+                  name="price"
+                  autoComplete="off"
+                  onKeyDown={(e) => {
+                    const allowedKeys = /[0-9]/;
+                    if (!allowedKeys.test(e.key) && e.key !== "Backspace") {
+                      e.preventDefault();
+                    }
+                  }}
+                  onBlur={(e) => {
+                    const value = parseInt(e.target.value.replace(/\D/g, ""));
+                    if (!isNaN(value)) {
+                      const formattedValue = value.toLocaleString("pt-BR");
+                      e.target.value = formattedValue;
+                    }
+                  }}
+                  className="border-2 w-full rounded-lg h-11 pl-10 pr-2 py-1"
+                  placeholder="2.000.000"
+                />
+              </div>
               {errors.price && (
                 <div className="flex items-center gap-1 my-2 font-medium text-sm">
                   <CgDanger size={16} color="#EF4444" />
@@ -478,38 +490,32 @@ export function New() {
 
             <div className="w-full">
               <p className="mb-2 text-gray-600 font-medium">Km rodados</p>
-              <input
-                type="text"
-                {...register("km")}
-                name="km"
-                autoComplete="off"
-                onKeyDown={(e) => {
-                  const allowedKeys = /[0-9.]/;
-                  if (!allowedKeys.test(e.key) && e.key !== "Backspace") {
-                    e.preventDefault();
-                  }
-                  if (e.key === "." || e.key === ",") {
-                    e.preventDefault();
-                  }
-                }}
-                onBlur={(e) => {
-                  const value = parseFloat(
-                    e.target.value.replace(".", "").replace(",", ".")
-                  );
-                  if (!isNaN(value)) {
-                    const formattedValue =
-                      value
-                        .toLocaleString("pt-BR", {
-                          minimumFractionDigits: 0,
-                          maximumFractionDigits: 20,
-                        })
-                        .replace(",", ".") + "km";
-                    e.target.value = formattedValue;
-                  }
-                }}
-                className="border-2 w-full rounded-lg h-11 px-2"
-                placeholder="Ex: 8.800km..."
-              />
+              <div className="relative flex items-center w-full">
+                <input
+                  type="text"
+                  {...register("km")}
+                  name="km"
+                  autoComplete="off"
+                  onKeyDown={(e) => {
+                    const allowedKeys = /[0-9]/;
+                    if (!allowedKeys.test(e.key) && e.key !== "Backspace") {
+                      e.preventDefault();
+                    }
+                  }}
+                  onBlur={(e) => {
+                    const value = parseInt(e.target.value);
+                    if (!isNaN(value)) {
+                      const formattedValue = value.toLocaleString("pt-BR");
+                      e.target.value = formattedValue;
+                    }
+                  }}
+                  className="border-2 w-full rounded-lg h-11 pl-2 pr-10"
+                  placeholder="Ex: 8800"
+                />
+                <span className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none text-gray-500">
+                  km
+                </span>
+              </div>
               {errors.km && (
                 <div className="flex items-center gap-1 my-2 font-medium text-sm">
                   <CgDanger size={16} color="#EF4444" />
@@ -862,7 +868,7 @@ export function New() {
                 }}
                 autoComplete="off"
                 className="border-2 w-full rounded-lg h-11 px-2"
-                placeholder="Ex: 01299999999..."
+                placeholder="Ex: 1299999999..."
               />
               {errors.whatsapp && (
                 <div className="flex items-center gap-1 my-2 font-medium text-sm">
@@ -874,13 +880,13 @@ export function New() {
           </div>
 
           <div className="mb-3">
-            <p className="mb-2 font-medium">Informaçoes adicionais</p>
+            <p className="mb-2 font-medium">Items do veículo</p>
             <textarea
               className="border-2 w-full rounded-lg min-h-[8rem] h-32 max-h-32 px-2 py-2"
               {...register("description")}
               name="description"
               id="description"
-              placeholder="Digite neste campo uma descrição completa sobre o veículo ou qualquer outra informação adicional necessária..."
+              placeholder="Ex: Farol de neblina, Direção Elétrica, Comando de áudio no volante, Banco bi-partido, Controle de estabilidade, Distribuição eletrônica de frenagem, Kit Multimídia, MP3 Player..."
             />
             {errors.description && (
               <div className="flex items-center gap-1 my-2 font-medium text-sm">
