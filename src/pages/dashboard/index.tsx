@@ -100,12 +100,11 @@ export function Dashboard() {
       try {
         await deleteObject(imageRef);
         setCars(cars.filter((car) => car.id !== itemCar.id));
-
-        toast.success("Veículo removido com sucesso!");
       } catch (err) {
         toast.error("Erro ao excluir veículo!");
       }
     });
+    toast.success("Veículo removido com sucesso!");
   }
 
   const greetings = {
