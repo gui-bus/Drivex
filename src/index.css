@@ -19,3 +19,7 @@ body {
   justify-content: center;
   height: 100vh;
 }
+.swiper-scrollbar.swiper-scrollbar-horizontal {
+  background-color: #fff;
+  margin-bottom: 10px;
+}
