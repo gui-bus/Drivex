@@ -4,9 +4,24 @@
   <img src="https://github.com/gui-bus/drivex/blob/main/Github/DriveX/Images/MacbookAir-1.png?raw=true" alt="Gif desktop" width="700" />
 </div>
 
+<div align="center">
+<h2 align="center">Atalhos de navegação</h1>
+
+***[Sobre o projeto](#drivex-)*** :car:​ 
+***[Funcionalidades](#funcionalidades-dart)*** :dart:​ 
+***[Como acessar a DriveX](#como-acessar-a-página-gear)*** :gear: 
+***[Tecnologias utilizadas](#tecnologias-utilizadas-dart)*** :dart: 
+***[Galeria](#galeria-camera)*** :camera: 
+***[Contribuição](#contribuição-bulb)*** :bulb:
+***[Créditos e Agradecimentos](#creditos-e-agradecimentos-handshake)*** :handshake:
+***[Contato](#redes-sociais-para-contato-speech_balloon)*** :speech_balloon:
+***[Página personalizada](#precisa-de-uma-pagina-personalizada-para-o-seu-negócio-rocket)*** :rocket:
+
+</div>
+
 ## DriveX 🚗
 
-***A [DriveX](https://drivex-cars.vercel.app/) é uma página web de compra e venda de veículos, desenvolvido com Vite, React, TypeScript e Tailwind CSS.*** O projeto conta com um sistema de autenticação com Firebase para gerenciar o login e registro de usuários, bem como um banco de dados Firestore para armazenar informações sobre veículos e usuários. Além disso, o projeto oferece a possibilidade de entrar em contato com os vendedores via WhatsApp.
+***A [DriveX](https://drivex-cars.vercel.app/) é uma página web de compra e venda de veículos, desenvolvido com Vite, React, TypeScript, Firebase e Tailwind CSS.*** O projeto conta com um sistema de autenticação com Firebase para gerenciar o login e registro de usuários, bem como um banco de dados Firestore para armazenar informações sobre veículos e usuários. Além disso, o projeto oferece a possibilidade de entrar em contato com os vendedores via WhatsApp.
 
 ***Venha e explore a melhor seleção de carros novos e usados em todo o Brasil!*** :star:
 
@@ -37,15 +52,15 @@
 
 ## Tecnologias utilizadas :dart:
 
-<div style="display: inline_block"><br>
-  <img align="center" alt="Firebase" height="50" width="60" src="https://raw.githubusercontent.com/devicons/devicon/1119b9f84c0290e0f0b38982099a2bd027a48bf1/icons/firebase/firebase-plain.svg"> &nbsp;&nbsp;
-  <img align="center" alt="React" height="50" width="60" src="https://raw.githubusercontent.com/devicons/devicon/1119b9f84c0290e0f0b38982099a2bd027a48bf1/icons/react/react-original.svg"> &nbsp;&nbsp;
-  <img align="center" alt="Typescript" height="50" width="60" src="https://raw.githubusercontent.com/devicons/devicon/1119b9f84c0290e0f0b38982099a2bd027a48bf1/icons/typescript/typescript-plain.svg">
- &nbsp;&nbsp;
-  <img align="center" alt="Tailwind" height="50" width="60" src="https://raw.githubusercontent.com/devicons/devicon/1119b9f84c0290e0f0b38982099a2bd027a48bf1/icons/tailwindcss/tailwindcss-plain.svg"> &nbsp;&nbsp;
-  <img align="center" alt="Vite" height="50" width="60" src="https://vitejs.dev/logo.svg"> &nbsp;&nbsp;
-   <img align="center" alt="Vercel" height="50" width="60" src="https://www.svgrepo.com/show/361653/vercel-logo.svg"> &nbsp;&nbsp;
+<div>
+	<img alt="React" height="80" width="80" src="https://github.com/gui-bus/TechIcons/blob/main/Dark/React.svg">
+	<img alt="Vite" height="80" width="80" src="https://github.com/gui-bus/TechIcons/blob/main/Dark/Vite.svg">
+	<img alt="Typescript" height="80" width="80" src="https://github.com/gui-bus/TechIcons/blob/main/Dark/Typescript.svg">
+	<img alt="Tailwind" height="80" width="80" src="https://github.com/gui-bus/TechIcons/blob/main/Dark/TailwindCSS.svg">
+	<img alt="Firebase" height="80" width="80" src="https://github.com/gui-bus/TechIcons/blob/main/Dark/Firebase.svg">
+	<img alt="Vercel" height="80" width="80" src="https://github.com/gui-bus/TechIcons/blob/main/Dark/Vercel.svg">
 </div>
+
 
 ## Galeria :camera:
 #### Desktop
@@ -90,9 +105,15 @@ Gostaria de contribuir para o projeto? ***Fico muito grato pelo interesse!***
 
 ## Redes sociais para contato! :speech_balloon:
 
-[![LinkedIn](https://img.icons8.com/color/48/000000/linkedin.png)](https://www.linkedin.com/in/gui-bus/) 
-[![Instagram](https://img.icons8.com/fluency/48/000000/instagram-new.png)](https://www.instagram.com/guibus_dev/)
-[![Gmail](https://img.icons8.com/fluency/48/000000/gmail.png)](mailto:guibus.dev@gmail.com)
+<a href="https://www.instagram.com/guibus_dev/" target="_blank">
+	<img alt="Instagram" height="60" width="60"  src="https://github.com/gui-bus/TechIcons/blob/main/Dark/Instagram.svg"> 
+</a>
+<a href="https://www.linkedin.com/in/gui-bus/" target="_blank">
+	<img alt="LinkedIn" height="60" width="60"  src="https://github.com/gui-bus/TechIcons/blob/main/Dark/Linkedin.svg"> 
+</a>
+<a href="mailto:guibus.dev@gmail.com" target="_blank">
+	<img alt="Gmail" height="60" width="60" src="https://github.com/gui-bus/TechIcons/blob/main/Dark/Gmail.svg"> 
+</a>
 
 
 ## Precisa de uma pagina personalizada para o seu negócio? :rocket:
